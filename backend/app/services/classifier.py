@@ -2,32 +2,38 @@ from PIL import Image
 from transformers import pipeline
 
 
+# Load the waste classification model.
 classifier = pipeline(
     "image-classification",
     model="watersplash/waste-classification",
 )
 
 
+# Minimum score required before presenting a category as a prediction.
+# This helps filter low-scoring predictions but cannot guarantee accuracy.
+CONFIDENCE_THRESHOLD = 75.0
+
+
 DISPOSAL_GUIDE = {
     "battery": {
         "category": "Battery",
         "action": (
-            "Take batteries to a designated battery or e-waste collection "
-            "point. Do not place them in regular waste."
+            "Take batteries to a designated battery or e-waste "
+            "collection point. Do not place them in regular waste."
         ),
     },
     "biological": {
         "category": "Biological Waste",
         "action": (
-            "Place biological/organic waste in the designated "
+            "Place suitable organic waste in the designated "
             "organic waste collection bin."
         ),
     },
     "brown-glass": {
         "category": "Brown Glass",
         "action": (
-            "Place clean glass in the designated glass recycling "
-            "collection point."
+            "Check local recycling rules and use an appropriate "
+            "glass collection point."
         ),
     },
     "cardboard": {
@@ -40,27 +46,29 @@ DISPOSAL_GUIDE = {
     "clothes": {
         "category": "Clothes",
         "action": (
-            "Place usable or unwanted clothing in the designated "
-            "textile donation or collection point."
+            "Consider textile reuse or donation, or use a designated "
+            "textile collection point."
         ),
     },
     "green-glass": {
         "category": "Green Glass",
         "action": (
-            "Place clean glass in the designated glass recycling "
-            "collection point."
+            "Check local recycling rules and use an appropriate "
+            "glass collection point."
         ),
     },
     "metal": {
         "category": "Metal",
         "action": (
-            "Place metal items in the designated metal recycling collection."
+            "Check local recycling rules and use a designated "
+            "metal recycling collection."
         ),
     },
     "paper": {
         "category": "Paper",
         "action": (
-            "Place clean, dry paper in the paper recycling collection."
+            "Place clean, dry paper in the designated paper "
+            "recycling collection."
         ),
     },
     "plastic": {
@@ -73,40 +81,72 @@ DISPOSAL_GUIDE = {
     "shoes": {
         "category": "Shoes",
         "action": (
-            "Place unwanted shoes in the designated textile/shoe "
-            "collection point."
+            "Consider reuse or donation, or use a designated "
+            "shoe/textile collection point."
         ),
     },
     "trash": {
         "category": "General Waste",
         "action": (
-            "Place this item in the designated general-waste collection bin."
+            "Check local disposal guidance for the item before "
+            "placing it in general waste."
         ),
     },
     "white-glass": {
         "category": "White Glass",
         "action": (
-            "Place clean glass in the designated glass recycling "
-            "collection point."
+            "Check local recycling rules and use an appropriate "
+            "glass collection point."
         ),
     },
 }
 
 
+def uncertain_result(confidence, label, alternatives, reason):
+    """Return a cautious result when the prediction should not be trusted."""
+
+    return {
+        "category": "Uncertain",
+        "confidence": confidence,
+        "action": (
+            f"{reason} Photograph one item at a time, if possible, "
+            "and check local waste disposal guidance."
+        ),
+        "model_label": label,
+        "alternatives": alternatives,
+    }
+
+
 def classify_waste(image: Image.Image) -> dict:
+    """
+    Predict the most likely waste category.
+
+    Important:
+    This model predicts one main class for an image. It does not reliably
+    identify every material in a mixed-waste image.
+    """
+
+    if image is None:
+        return uncertain_result(
+            0.0,
+            None,
+            [],
+            "No image was provided.",
+        )
+
+    # Normalize the image before inference.
+    image = image.convert("RGB")
+
+    # Request several predictions so we can inspect the model's output.
     predictions = classifier(image, top_k=3)
 
     if not predictions:
-        return {
-            "category": "Uncertain",
-            "confidence": 0.0,
-            "action": (
-                "No usable prediction was returned. "
-                "Try uploading a clearer image."
-            ),
-            "model_label": None,
-            "alternatives": [],
-        }
+        return uncertain_result(
+            0.0,
+            None,
+            [],
+            "The model did not return a usable prediction.",
+        )
 
     best = predictions[0]
     label = best["label"].lower()
@@ -120,31 +160,42 @@ def classify_waste(image: Image.Image) -> dict:
         for prediction in predictions
     ]
 
-    # A low score means the result should be treated as uncertain.
-    # This threshold does not guarantee that higher-scoring predictions
-    # are correct.
-    if confidence < 75:
-        return {
-            "category": "Uncertain",
-            "confidence": confidence,
-            "action": (
-                "The model is not confident enough to recommend a disposal "
-                "route. Try a clearer photo and check local waste guidance."
-            ),
-            "model_label": label,
-            "alternatives": alternatives,
-        }
+    # Reject predictions below the existing confidence threshold.
+    if confidence < CONFIDENCE_THRESHOLD:
+        return uncertain_result(
+            confidence,
+            label,
+            alternatives,
+            "The model's prediction score is below the configured threshold.",
+        )
 
-    guide = DISPOSAL_GUIDE.get(
-        label,
-        {
-            "category": label.replace("-", " ").title(),
-            "action": (
-                "Check the appropriate campus waste collection point "
-                "and local disposal guidance."
-            ),
-        },
-    )
+    # A strong top prediction alone does not prove the image contains
+    # only one material or that the predicted category is correct.
+    if len(predictions) > 1:
+        second_confidence = predictions[1]["score"] * 100
+        score_gap = confidence - second_confidence
+
+        # Treat close competing predictions cautiously.
+        if score_gap < 5:
+            return uncertain_result(
+                confidence,
+                label,
+                alternatives,
+                (
+                    "The model has similar scores for multiple categories, "
+                    "so the result may be ambiguous."
+                ),
+            )
+
+    guide = DISPOSAL_GUIDE.get(label)
+
+    if guide is None:
+        return uncertain_result(
+            confidence,
+            label,
+            alternatives,
+            "The predicted category has no verified disposal recommendation.",
+        )
 
     return {
         "category": guide["category"],

@@ -1,0 +1,697 @@
+/* =========================================================
+   RELOOP — NATURE TECH DESIGN SYSTEM
+   Forest Green · Electric Lime · Warm Ivory
+   ========================================================= */
+
+:root {
+  color-scheme: light;
+
+  --page-bg: #f7f6ef;
+  --surface: #ffffff;
+  --surface-secondary: #f3f5ed;
+
+  --text-primary: #203528;
+  --text-secondary: #69776a;
+  --text-muted: #929c90;
+
+  --border-color: #e4e8dc;
+
+  --accent: #368653;
+  --accent-dark: #183d2b;
+  --accent-soft: #e7f1df;
+
+  --sidebar-bg: #183d2b;
+  --sidebar-hover: #285139;
+  --sidebar-muted: #b7c7b7;
+
+  --radius-sm: 9px;
+  --radius-md: 13px;
+  --radius-lg: 18px;
+  --radius-xl: 23px;
+
+  --shadow-sm: 0 2px 8px rgba(24, 61, 43, 0.045);
+  --shadow-md: 0 9px 25px rgba(24, 61, 43, 0.075);
+  --shadow-lg: 0 18px 45px rgba(24, 61, 43, 0.11);
+
+  --lime: #c8f169;
+  --forest: #183d2b;
+
+  --transition: 200ms ease;
+}
+
+/* =========================================================
+   GLOBAL FOUNDATION
+   ========================================================= */
+
+html {
+  background: var(--page-bg);
+}
+
+body {
+  background: var(--page-bg);
+  color: var(--text-primary);
+}
+
+#root,
+.app {
+  min-height: 100vh;
+  background: var(--page-bg);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color: var(--text-primary);
+}
+
+p {
+  color: var(--text-secondary);
+}
+
+::selection {
+  background: var(--lime);
+  color: var(--forest);
+}
+
+/* Consistent keyboard focus */
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* =========================================================
+   BRAND AND SIDEBAR
+   ========================================================= */
+
+.sidebar {
+  background:
+    radial-gradient(
+      ellipse at top left,
+      rgba(200, 241, 105, 0.075),
+      transparent 42%
+    ),
+    linear-gradient(180deg, #183d2b 0%, #153625 100%);
+
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  color: #f6f8f0;
+}
+
+.brand {
+  color: #f7f9f3;
+  letter-spacing: -0.8px;
+}
+
+.brand-mark {
+  background: var(--lime);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: var(--forest);
+
+  box-shadow: 0 4px 15px rgba(200, 241, 105, 0.12);
+}
+
+.brand:hover .brand-mark {
+  background: #d5f78e;
+  transform: rotate(-7deg);
+}
+
+.sidebar nav {
+  gap: 7px;
+}
+
+.nav-item {
+  min-height: 46px;
+
+  border: 1px solid transparent;
+  border-radius: 12px;
+
+  color: var(--sidebar-muted);
+
+  transition:
+    background var(--transition),
+    border-color var(--transition),
+    color var(--transition),
+    transform var(--transition);
+}
+
+.nav-item svg {
+  color: #a6c0a4;
+  transition: color var(--transition);
+}
+
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.075);
+  border-color: rgba(255, 255, 255, 0.055);
+  color: #ffffff;
+}
+
+.nav-item:hover svg {
+  color: var(--lime);
+}
+
+.nav-item.active {
+  background: rgba(200, 241, 105, 0.12);
+  border-color: rgba(200, 241, 105, 0.15);
+  color: #ffffff;
+}
+
+.nav-item.active svg {
+  color: var(--lime);
+}
+
+.nav-item.active::before {
+  background: var(--lime);
+  box-shadow: 0 0 10px rgba(200, 241, 105, 0.22);
+}
+
+/* Sidebar statistics */
+
+.impact-card {
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+}
+
+.impact-card span,
+.impact-card small {
+  color: #b7c8b5;
+}
+
+.impact-card strong {
+  color: var(--lime);
+}
+
+.avatar {
+  background: var(--lime);
+  color: var(--forest);
+}
+
+.profile strong {
+  color: #f3f7ed;
+}
+
+.profile span {
+  color: #b0c1ad;
+}
+
+/* =========================================================
+   MAIN CONTENT
+   ========================================================= */
+
+.main {
+  background: var(--page-bg);
+}
+
+.eyebrow,
+.section-label {
+  color: #61804f;
+}
+
+/* =========================================================
+   PRIMARY BUTTONS
+   ========================================================= */
+
+.scan-button,
+.primary-button,
+.analyze-button,
+.map-button {
+  border: 1px solid var(--forest);
+  border-radius: 11px;
+
+  background: var(--forest);
+  color: #ffffff;
+
+  box-shadow: 0 3px 8px rgba(24, 61, 43, 0.07);
+
+  transition:
+    background var(--transition),
+    border-color var(--transition),
+    color var(--transition),
+    box-shadow var(--transition),
+    transform var(--transition);
+}
+
+.scan-button:hover,
+.primary-button:hover,
+.analyze-button:hover:not(:disabled),
+.map-button:hover {
+  background: #28583b;
+  border-color: #28583b;
+  color: #ffffff;
+
+  box-shadow: 0 7px 17px rgba(24, 61, 43, 0.16);
+  transform: translateY(-2px);
+}
+
+.scan-button:active,
+.primary-button:active,
+.analyze-button:active:not(:disabled),
+.map-button:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.scan-button:disabled,
+.primary-button:disabled,
+.analyze-button:disabled,
+.map-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+
+/* The primary action on the dashboard uses our signature lime. */
+
+.scan-card .primary-button {
+  background: var(--lime);
+  border-color: #b8e45a;
+  color: var(--forest);
+
+  box-shadow: 0 4px 10px rgba(65, 91, 40, 0.08);
+}
+
+.scan-card .primary-button:hover {
+  background: #d7f78d;
+  border-color: #c8ee79;
+  color: var(--forest);
+
+  box-shadow: 0 7px 17px rgba(65, 91, 40, 0.14);
+}
+
+/* Text buttons */
+
+.text-button {
+  color: var(--accent-dark);
+  border-radius: 8px;
+}
+
+.text-button:hover:not(:disabled) {
+  background: var(--accent-soft);
+  color: #245b36;
+}
+
+/* Back buttons */
+
+.back-button {
+  color: #50704b;
+}
+
+.back-button:hover {
+  color: var(--forest);
+}
+
+/* =========================================================
+   DASHBOARD HERO
+   ========================================================= */
+
+.scan-card {
+  position: relative;
+
+  border: 1px solid #c7daa8;
+  border-radius: var(--radius-xl);
+
+  background:
+    radial-gradient(
+      circle at 90% 12%,
+      rgba(255, 255, 255, 0.62),
+      transparent 33%
+    ),
+    linear-gradient(125deg, #e3efce 0%, #d4e7b6 100%);
+
+  box-shadow: var(--shadow-sm);
+
+  transition:
+    border-color var(--transition),
+    box-shadow var(--transition);
+}
+
+.scan-card:hover {
+  border-color: #b5cf91;
+  box-shadow: var(--shadow-md);
+}
+
+.scan-content h2 {
+  color: #203b29;
+}
+
+.scan-content p {
+  color: #52694d;
+}
+
+.scan-visual {
+  color: #587a45;
+}
+
+.visual-ring {
+  border-color: rgba(68, 107, 49, 0.27);
+}
+
+/* =========================================================
+   STATISTICS AND CONTENT PANELS
+   ========================================================= */
+
+.stat-card,
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+
+  box-shadow: var(--shadow-sm);
+
+  transition:
+    border-color var(--transition),
+    box-shadow var(--transition);
+}
+
+.stat-card:hover,
+.panel:hover {
+  border-color: #d1dec5;
+  box-shadow: var(--shadow-md);
+}
+
+.stat-top {
+  color: var(--text-secondary);
+}
+
+.stat-top svg {
+  color: var(--accent);
+}
+
+.stat-card > strong {
+  color: var(--forest);
+}
+
+.stat-change span {
+  color: var(--accent);
+}
+
+/* =========================================================
+   CATEGORY ANALYTICS
+   ========================================================= */
+
+.panel-header h3 {
+  color: var(--forest);
+}
+
+.panel-header > svg {
+  color: #648452;
+}
+
+.category-icon {
+  background: #edf3e7;
+  border: 1px solid #e2ebd9;
+  color: #477044;
+
+  transition:
+    background var(--transition),
+    color var(--transition);
+}
+
+.category-row:hover .category-icon {
+  background: #e0efcf;
+  color: var(--forest);
+}
+
+.category-info > span {
+  color: #354837;
+}
+
+.progress {
+  background: #edf1e7;
+}
+
+.progress-fill {
+  background: linear-gradient(90deg, #398653, #9ccf61);
+}
+
+/* =========================================================
+   INSIGHTS
+   ========================================================= */
+
+.insight {
+  background:
+    linear-gradient(115deg, #edf5e4 0%, #f6f8f0 100%);
+
+  border: 1px solid #d8e5c9;
+  border-radius: 16px;
+
+  box-shadow: var(--shadow-sm);
+}
+
+.insight-icon {
+  background: var(--lime);
+  color: var(--forest);
+  border: 1px solid rgba(24, 61, 43, 0.06);
+}
+
+.insight strong {
+  color: var(--forest);
+}
+
+.insight p {
+  color: #536650;
+}
+
+/* =========================================================
+   SCAN PAGE
+   ========================================================= */
+
+.scan-page {
+  background: var(--page-bg);
+}
+
+.upload-card,
+.result-card {
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+
+  box-shadow: var(--shadow-sm);
+}
+
+.upload-zone {
+  background: #f9faf5;
+  border: 1.5px dashed #a9c49a;
+  border-radius: 16px;
+
+  color: #52684d;
+
+  transition:
+    background var(--transition),
+    border-color var(--transition),
+    box-shadow var(--transition);
+}
+
+.upload-zone:hover {
+  background: #eff6e6;
+  border-color: var(--accent);
+
+  box-shadow: inset 0 0 0 1px rgba(54, 134, 83, 0.08);
+}
+
+.upload-icon,
+.result-placeholder-icon {
+  background: var(--lime);
+  border: 1px solid #bfe56c;
+  color: var(--forest);
+}
+
+.upload-zone h2 {
+  color: var(--forest);
+}
+
+.upload-zone p {
+  color: #7c8977;
+}
+
+.upload-note {
+  color: #718a63;
+}
+
+.preview-container {
+  border: 1px solid #334236;
+  border-radius: 16px;
+}
+
+.change-image {
+  border: 1px solid rgba(24, 61, 43, 0.08);
+  background: rgba(255, 255, 255, 0.96);
+  color: var(--forest);
+
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+}
+
+.change-image:hover {
+  background: var(--lime);
+  color: var(--forest);
+}
+
+.result-success {
+  color: var(--accent);
+}
+
+.result-content h2 {
+  color: var(--forest);
+}
+
+.confidence {
+  border-bottom-color: var(--border-color);
+  color: var(--text-secondary);
+}
+
+.confidence strong {
+  color: var(--accent);
+}
+
+.action-box {
+  background: #edf5e5;
+  border: 1px solid #dce9cf;
+  border-radius: 14px;
+}
+
+.action-box p {
+  color: #4f624a;
+}
+
+.location-box {
+  color: var(--accent-dark);
+}
+
+.location-box span {
+  color: var(--text-muted);
+}
+
+.location-box strong {
+  color: var(--forest);
+}
+
+/* =========================================================
+   SCAN PAGE INTERACTION
+   ========================================================= */
+
+.upload-zone:active {
+  background: #eaf4df;
+}
+
+/* =========================================================
+   MAP AND LOCATION SECTIONS
+   ========================================================= */
+
+.map-placeholder {
+  background: #edf2e6;
+  border-color: #e0e8d6;
+  border-radius: 14px;
+}
+
+.map-grid {
+  background-image:
+    linear-gradient(#d5e0ce 1px, transparent 1px),
+    linear-gradient(90deg, #d5e0ce 1px, transparent 1px);
+}
+
+.hotspot {
+  background: var(--accent);
+  box-shadow: 0 0 0 7px rgba(54, 134, 83, 0.17);
+}
+
+.map-label {
+  background: rgba(255, 255, 255, 0.94);
+  color: #476344;
+  border: 1px solid #e2e9dc;
+}
+
+.hotspot-footer > span {
+  color: var(--text-secondary);
+}
+
+.hotspot-footer i {
+  background: var(--accent);
+}
+
+/* =========================================================
+   GENERAL PAGE CONSISTENCY
+   ========================================================= */
+
+.main .panel h3 {
+  color: var(--forest);
+}
+
+.main a {
+  color: var(--accent-dark);
+}
+
+.main a:hover {
+  color: var(--accent);
+}
+
+/* Shared application button transitions */
+
+button {
+  transition-property:
+    background-color,
+    border-color,
+    box-shadow,
+    color,
+    opacity,
+    transform;
+  transition-duration: 180ms;
+  transition-timing-function: ease;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 700px) {
+  .sidebar {
+    background:
+      radial-gradient(
+        circle at top left,
+        rgba(200, 241, 105, 0.07),
+        transparent 55%
+      ),
+      #183d2b;
+  }
+
+  .nav-item.active {
+    background: rgba(200, 241, 105, 0.13);
+  }
+
+  .scan-card {
+    background:
+      radial-gradient(
+        circle at 90% 15%,
+        rgba(255, 255, 255, 0.55),
+        transparent 35%
+      ),
+      linear-gradient(125deg, #e3efce 0%, #d4e7b6 100%);
+  }
+
+  .panel,
+  .stat-card {
+    box-shadow: var(--shadow-sm);
+  }
+
+  .scan-page {
+    background: var(--page-bg);
+  }
+}
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
