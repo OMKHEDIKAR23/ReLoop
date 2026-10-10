@@ -22,3 +22,5 @@ __pycache__/
 .idea/
 .DS_Store
 Thumbs.db
+# Runtime data
+backend/data/waste_events.jsonl
