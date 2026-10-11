@@ -23,16 +23,14 @@ import {
 } from "lucide-react";
 
 /*
- * For local development, the backend defaults to localhost.
+ * API requests use the same origin by default.
  *
  * For deployment, configure VITE_API_URL to the backend's base URL.
  * Example: VITE_API_URL=https://your-backend.example.com
  */
-const API_BASE_URL = (
-  import.meta.env.VITE_API_URL || "http://127.0.0.1:8000"
-).replace(/\/+$/, "");
-
-const API_URL = `${API_BASE_URL}/api/waste/analyze`;
+const API_URL = import.meta.env.VITE_API_URL
+  ? `${import.meta.env.VITE_API_URL.replace(/\/+$/, "")}/api/waste/analyze`
+  : "/api/waste/analyze";
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
 

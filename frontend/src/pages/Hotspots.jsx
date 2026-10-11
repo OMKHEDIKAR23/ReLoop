@@ -18,7 +18,7 @@ import {
   Zap,
 } from "lucide-react";
 
-const HISTORY_URL = "http://127.0.0.1:8000/api/waste/history";
+const HISTORY_URL = "/api/waste/history";
 
 function normalizeCategory(category) {
   return String(category || "Unknown")

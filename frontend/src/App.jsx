@@ -20,7 +20,7 @@ import Hotspots from "./pages/Hotspots";
 import DisposalGuide from "./DisposalGuide";
 import CollectionPoints from "./pages/CollectionPoints";
 
-const API_URL = "http://127.0.0.1:8000/api/waste/history";
+const API_URL = "/api/waste/history";
 
 const categoryIcons = {
   plastic: Recycle,
